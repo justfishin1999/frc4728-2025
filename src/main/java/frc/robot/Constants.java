@@ -23,15 +23,14 @@ public final class Constants {
         public static double kD = 0.0;
         public static double kS = 0.0;
         public static double kV = 0.0;
+        public static double kG = 0.0;
 
-        public static double kMaxSpeedMotionMagic = 0.0;
-        public static double kMaxAccelerationMotionMagic = 0.0;
-        public static double kMaxCurrentPerMotor = 0.0;
+        public static double kAcceleration = 0.0;
+        public static double kCruiseVelo = 0.0;
+        public static double kJerk = 0.0;
 
-        public static double kElevatorGearRatio = 0.0/0.0;
-
-        public static int topMotorID = 0;
-        public static int bottomMotorID = 0;
+        public static int topMotorID = 5;
+        public static int bottomMotorID = 6;
     }
 
     public static final class IntakeConstants {

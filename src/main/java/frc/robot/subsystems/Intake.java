@@ -48,6 +48,9 @@ public class Intake extends SubsystemBase{
 
     }
 
+    public void runIntake_in(double velocity){
+    }
+
 
 
     public void stop(){
