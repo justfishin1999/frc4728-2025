@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.*;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -25,9 +26,9 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Wrist;
 
 public class RobotContainer {
-    private Elevator elevator;
-    private Intake intake;
-    private Wrist wrist;
+    private Elevator elevator =  new Elevator();
+    private Intake intake = new Intake();
+    private Wrist wrist = new Wrist();
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -69,6 +70,10 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        joystick.a().onTrue(new SetElevatorBottom(elevator));
+        joystick.b().onTrue(new SetElevatorPos1(elevator));
+        joystick.x().onTrue(new SetElevatorPos2(elevator));
     }
 
     public Command getAutonomousCommand() {

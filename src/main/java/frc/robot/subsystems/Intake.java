@@ -27,10 +27,8 @@ public class Intake extends SubsystemBase{
         s_kV = Constants.IntakeConstants.kV;
 
         s_topMotorID = Constants.IntakeConstants.motor1ID;
-        s_bottomMotorID = Constants.IntakeConstants.motor2ID; 
 
         s_topMotor = new TalonFX(s_topMotorID);
-        s_bottomMotor = new TalonFX(s_bottomMotorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.Slot0.kP = s_kP;
@@ -40,7 +38,6 @@ public class Intake extends SubsystemBase{
         config.Slot0.kV = s_kV;
 
         s_topMotor.getConfigurator().apply(config);
-        s_bottomMotor.getConfigurator().apply(config);
 
     }
 

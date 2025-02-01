@@ -25,9 +25,9 @@ public final class Constants {
         public static double kV = 0.12;
         public static double kA = 0.1;
 
-        public static double kAcceleration = 50.0;
-        public static double kCruiseVelo = 10.0;
-        public static double kJerk = 0.0;
+        public static double kAcceleration = 0.5;
+        public static double kCruiseVelo = 0.1;
+        public static double kJerk = 1600.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
 
@@ -42,11 +42,11 @@ public final class Constants {
         public static double kS = 0.0;
         public static double kV = 0.0;
 
-        public static double kAcceleration = 0.0;
-        public static double kCruiseVelo = 0.0;
-        public static double kJerk = 0.0;
-        public static double kMotionMagicV = 0.0;
-        public static double kMotionMagicA = 0.0;
+        public static double kAcceleration = 50.0;
+        public static double kCruiseVelo = 10.0;
+        public static double kJerk = 1600.0;
+        public static double kMotionMagicV = 0.12;
+        public static double kMotionMagicA = 0.1;
 
         public static int motor1ID = 0;
     }
@@ -60,7 +60,7 @@ public final class Constants {
 
         public static double kAcceleration = 50.0;
         public static double kCruiseVelo = 10.0;
-        public static double kJerk = 0.0;
+        public static double kJerk = 1600.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
 

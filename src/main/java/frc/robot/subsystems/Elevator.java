@@ -29,10 +29,9 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase{
     double s_kP, s_kI, s_kD, s_kS, s_kV, s_kA, s_Acceleration, s_CruiseVelo, s_Jerk, s_motionMagicA, s_motionMagicV;
     int s_topMotorID, s_bottomMotorID;
-    Follower s_follower;
     TalonFX s_elevator1, s_elevator2;
     NeutralOut s_brake;
-    MotionMagicExpoVoltage s_request;
+    MotionMagicVoltage s_request;
 
 
     public Elevator() {
@@ -65,9 +64,9 @@ public class Elevator extends SubsystemBase{
 
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
-        config.MotionMagic.MotionMagicJerk = s_Jerk;
-        config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
-        config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
+        //config.MotionMagic.MotionMagicJerk = s_Jerk;
+        //config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
+        //config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
 
         //try to apply configurations to motors, throw warning to driver station if it doesn't work
         try{
@@ -78,18 +77,17 @@ public class Elevator extends SubsystemBase{
             System.out.println("Failed to apply elevator motor configs: "+e1.getStackTrace());
         }
         //set boolean false to true to invert motor direction
-        s_follower = new Follower(s_topMotorID,true);
-        s_elevator2.setControl(s_follower);
 
-        s_request = new MotionMagicExpoVoltage(0);
+        s_request = new MotionMagicVoltage(0);
     }
 
     public void setElevatorSetpoint(double elevatorSetpoint){
-        s_elevator2.setControl(s_request.withPosition(elevatorSetpoint));
+        s_elevator1.setControl(s_request.withPosition(elevatorSetpoint));
+        s_elevator2.setControl(new Follower(s_topMotorID,false));
     }
 
     public void periodic(){
-        s_elevator2.getRotorPosition();
+        SmartDashboard.putNumber("Elevator Position:",s_elevator1.getPosition().getValueAsDouble());
     }
 
     public void stop(){
