@@ -18,43 +18,52 @@ public final class Constants {
     }
 
     public static final class ElevatorConstants {
-        public static double kP = 0.0;
+        public static double kP = 4.8;
+        public static double kI = 0.0;
+        public static double kD = 0.1;
+        public static double kS = 0.25;
+        public static double kV = 0.12;
+        public static double kA = 0.1;
+
+        public static double kAcceleration = 50.0;
+        public static double kCruiseVelo = 10.0;
+        public static double kJerk = 0.0;
+        public static double kMotionMagicV = 0.12;
+        public static double kMotionMagicA = 0.1;
+
+        public static int topMotorID = 5;
+        public static int bottomMotorID = 9;
+    }
+
+    public static final class IntakeConstants {
+        public static double kP = 0.5;
         public static double kI = 0.0;
         public static double kD = 0.0;
         public static double kS = 0.0;
         public static double kV = 0.0;
-        public static double kA = 0.0;
 
         public static double kAcceleration = 0.0;
         public static double kCruiseVelo = 0.0;
         public static double kJerk = 0.0;
-
-        public static int topMotorID = 5;
-        public static int bottomMotorID = 6;
-    }
-
-    public static final class IntakeConstants {
-        public static double kP = 0.0;
-        public static double kI = 0.0;
-        public static double kD = 0.0;
-        public static double kS = 0.0;
-        public static double kV = 0.0;
+        public static double kMotionMagicV = 0.0;
+        public static double kMotionMagicA = 0.0;
 
         public static int motor1ID = 0;
-        public static int motor2ID = 0;
     }
     public static final class WristConstants {
-        public static double kP = 0.0;
+        public static double kP = 4.8;
         public static double kI = 0.0;
-        public static double kD = 0.0;
-        public static double kS = 0.0;
-        public static double kV = 0.0;
+        public static double kD = 0.1;
+        public static double kS = 0.25;
+        public static double kV = 0.12;
+        public static double kA = 0.1;
 
-        public static int motor1ID = 0;
-        public static int motor2ID = 0;
+        public static double kAcceleration = 50.0;
+        public static double kCruiseVelo = 10.0;
+        public static double kJerk = 0.0;
+        public static double kMotionMagicV = 0.12;
+        public static double kMotionMagicA = 0.1;
 
-        public static double kMaxSpeedMotionMagic = 0.0;
-        public static double kMaxAccelerationMotionMagic = 0.0;
-        public static double kMaxCurrentPerMotor = 0.0;
+        public static int motor1ID = 7;
     }
 }
