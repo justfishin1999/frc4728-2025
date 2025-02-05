@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -44,9 +44,9 @@ public class Wrist extends SubsystemBase{
         
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
-        config.MotionMagic.MotionMagicJerk = s_Jerk;
-        config.MotionMagic.MotionMagic_kA = s_motionMagicA;
-        config.MotionMagic.MotionMagic_kV = s_motionMagicV;
+        //config.MotionMagic.MotionMagicJerk = s_Jerk;
+        //config.MotionMagic.MotionMagic_kA = s_motionMagicA;
+        //config.MotionMagic.MotionMagic_kV = s_motionMagicV;
 
         try{
             s_wristMotor.getConfigurator().apply(config);
