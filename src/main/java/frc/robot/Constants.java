@@ -1,13 +1,4 @@
 package frc.robot;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
-
 public final class Constants {
 
     public static final class minMaxOutputConstants {
@@ -18,6 +9,7 @@ public final class Constants {
     }
 
     public static final class ElevatorConstants {
+        /*Define elevator PID controller variables and motor IDs */
         public static double kP = 4.8;
         public static double kI = 0.0;
         public static double kD = 0.1;
@@ -36,21 +28,25 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
+        /* Define manipulator/intake controller variables and motor IDs
+         * If REV motor is not used, will need to update controller configurations
+         * in the Intake subsystem, currently setup for REV.*/
+        
         public static double kP = 0.5;
         public static double kI = 0.0;
         public static double kD = 0.0;
+
+        //use for CTRE motor
         public static double kS = 0.0;
         public static double kV = 0.0;
 
-        public static double kAcceleration = 50.0;
-        public static double kCruiseVelo = 10.0;
-        public static double kJerk = 1600.0;
-        public static double kMotionMagicV = 0.12;
-        public static double kMotionMagicA = 0.1;
+        //use for REV motor
+        public static double kFF = 0.0;
 
         public static int motor1ID = 0;
     }
     public static final class WristConstants {
+        /*Define wrist controller variables and motor IDs */
         public static double kP = 4.8;
         public static double kI = 0.0;
         public static double kD = 0.1;
