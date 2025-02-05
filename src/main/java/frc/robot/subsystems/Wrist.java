@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase{
     int s_motorID;
     TalonFX s_wristMotor;
     NeutralOut s_brake;
-    MotionMagicExpoVoltage s_request;
+    MotionMagicVoltage s_request;
 
     public Wrist() {
         s_kP = Constants.WristConstants.kP;
@@ -45,8 +45,8 @@ public class Wrist extends SubsystemBase{
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
         config.MotionMagic.MotionMagicJerk = s_Jerk;
-        config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
-        config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
+        config.MotionMagic.MotionMagic_kA = s_motionMagicA;
+        config.MotionMagic.MotionMagic_kV = s_motionMagicV;
 
         try{
             s_wristMotor.getConfigurator().apply(config);
@@ -55,7 +55,7 @@ public class Wrist extends SubsystemBase{
             DriverStation.reportWarning(getName(),e1.getStackTrace());
             System.out.println("Failed to apply wrist motor configs: "+e1.getStackTrace());
         }
-        s_request = new MotionMagicExpoVoltage(0);
+        s_request = new MotionMagicVoltage(0);
 
     }
 
