@@ -1,29 +1,21 @@
 package frc.robot.subsystems;
 
-
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase{
-    double s_kP, s_kI, s_kD, s_kV, s_kS, s_kFF;
-    int s_manipulatorMotorID;
-    SparkMax s_manipulatorMotor;
-    SparkClosedLoopController s_closedLoopController;
-    SparkMaxConfig s_motorConfig;
-    RelativeEncoder s_encoder;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
 
+public class Intake extends SubsystemBase{
+    double s_kP, s_kI, s_kD, s_kS, s_kV, s_kA, s_Acceleration, s_CruiseVelo, s_Jerk, s_motionMagicA, s_motionMagicV;
+    int s_motorID;
+    TalonFX s_IntakeMotor;
+    NeutralOut s_brake;
+    VelocityVoltage m_velocityVoltage;
 
     public Intake() {
         s_kP = Constants.IntakeConstants.kP;
@@ -31,44 +23,41 @@ public class Intake extends SubsystemBase{
         s_kD = Constants.IntakeConstants.kD;
         s_kS = Constants.IntakeConstants.kS;
         s_kV = Constants.IntakeConstants.kV;
-        s_kFF = Constants.IntakeConstants.kFF;
+        s_kA = Constants.IntakeConstants.kA;
 
-        s_manipulatorMotorID = Constants.IntakeConstants.motor1ID;
+        s_motorID = Constants.IntakeConstants.motor1ID;
 
-        s_manipulatorMotor = new SparkMax(s_manipulatorMotorID,MotorType.kBrushless);
-        s_closedLoopController = s_manipulatorMotor.getClosedLoopController();
+        m_velocityVoltage = new VelocityVoltage(0).withSlot(0);
 
-        s_motorConfig = new SparkMaxConfig();
-        s_encoder = s_manipulatorMotor.getEncoder();
+        s_IntakeMotor = new TalonFX(s_motorID);
 
-        s_motorConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(s_kP)
-            .i(s_kI)
-            .d(s_kD)
-            .velocityFF(s_kFF)
-            .outputRange(Constants.minMaxOutputConstants.kMinOutput, Constants.minMaxOutputConstants.kMaxOutput);
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.Slot0.kP = s_kP;
+        config.Slot0.kI = s_kI;
+        config.Slot0.kD = s_kD;
+        config.Slot0.kS = s_kS;
+        config.Slot0.kV = s_kV;
+        config.Slot0.kA = s_kA;
 
-        s_manipulatorMotor.configure(s_motorConfig,ResetMode.kResetSafeParameters,PersistMode.kNoPersistParameters);
-            
-
+        try{
+            s_IntakeMotor.getConfigurator().apply(config);
+        }
+        catch(Exception e1){
+            DriverStation.reportWarning(getName(),e1.getStackTrace());
+            System.out.println("Failed to apply Intake motor configs: "+e1.getStackTrace());
+        }
 
     }
 
     public void periodic(){
-        //constantly check and output the intake velocity to the dashboard
-        SmartDashboard.putNumber("Intake Velocity",s_encoder.getVelocity());
+        SmartDashboard.putNumber("Intake Velocity",s_IntakeMotor.getVelocity().getValueAsDouble());
     }
 
-    public void runIntake_in(double velocity){
-        //set the 'controller' for the manipulator to the desired velocity
-        s_closedLoopController.setReference(velocity, ControlType.kVelocity, ClosedLoopSlot.kSlot1);
+    public void actuateArm(double setpoint){
+        s_IntakeMotor.setControl(m_velocityVoltage.withVelocity(setpoint));
     }
-
-
 
     public void stop(){
-        //s_closedLoopController.setReference(0.0,ControlType.kCurrent,ClosedLoopSlot.kSlot1);
-        s_manipulatorMotor.stopMotor();
+        s_IntakeMotor.setControl(s_brake);
     }
 }

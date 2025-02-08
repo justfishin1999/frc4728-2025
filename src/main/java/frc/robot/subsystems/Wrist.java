@@ -50,6 +50,7 @@ public class Wrist extends SubsystemBase{
 
         try{
             s_wristMotor.getConfigurator().apply(config);
+            System.out.println("Successfully configured wrist motor");
         }
         catch(Exception e1){
             DriverStation.reportWarning(getName(),e1.getStackTrace());

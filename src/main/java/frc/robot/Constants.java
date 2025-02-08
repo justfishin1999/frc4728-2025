@@ -28,22 +28,20 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        /* Define manipulator/intake controller variables and motor IDs
-         * If REV motor is not used, will need to update controller configurations
-         * in the Intake subsystem, currently setup for REV.*/
-        
-        public static double kP = 0.5;
+        public static double kP = 4.8;
         public static double kI = 0.0;
-        public static double kD = 0.0;
+        public static double kD = 0.1;
+        public static double kS = 0.25;
+        public static double kV = 0.12;
+        public static double kA = 0.1;
 
-        //use for CTRE motor
-        public static double kS = 0.0;
-        public static double kV = 0.0;
+        public static double kAcceleration = 0.5;
+        public static double kCruiseVelo = 0.1;
+        public static double kJerk = 1600.0;
+        public static double kMotionMagicV = 0.12;
+        public static double kMotionMagicA = 0.1;
 
-        //use for REV motor
-        public static double kFF = 0.0;
-
-        public static int motor1ID = 0;
+        public static int motor1ID = 32;
     }
     public static final class WristConstants {
         /*Define wrist controller variables and motor IDs */
@@ -61,5 +59,20 @@ public final class Constants {
         public static double kMotionMagicA = 0.1;
 
         public static int motor1ID = 7;
+    }
+
+    public static final class ClimberConstants {
+        /*Define climber controller variables and motor IDs(s) */
+        public static double kP = 0.4;
+        public static double kI = 0.0;
+        public static double kD = 0.0;
+
+        public static double kFF = 0.0; //not used here
+
+        public static int kMaxMotionVelocity = 500;
+        public static int kMaxMotionAcceleration = 3000;
+
+        public static int climberMotorID = 30;
+
     }
 }
