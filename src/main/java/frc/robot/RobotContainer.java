@@ -72,8 +72,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         joystick.a().onTrue(new SetElevatorBottom(elevator));
-        joystick.b().onTrue(new SetElevatorPos1(elevator));
-        joystick.x().onTrue(new SetElevatorPos2(elevator));
+        joystick.b().onTrue(new SetElevatorL1(elevator));
+        joystick.x().onTrue(new SetElevatorL2(elevator));
+        joystick.x().onTrue(new SetElevatorL3(elevator));
+        joystick.x().onTrue(new SetElevatorL4(elevator));
     }
 
     public Command getAutonomousCommand() {

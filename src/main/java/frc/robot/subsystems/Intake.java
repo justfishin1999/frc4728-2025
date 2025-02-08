@@ -53,8 +53,8 @@ public class Intake extends SubsystemBase{
         SmartDashboard.putNumber("Intake Velocity",s_IntakeMotor.getVelocity().getValueAsDouble());
     }
 
-    public void actuateArm(double setpoint){
-        s_IntakeMotor.setControl(m_velocityVoltage.withVelocity(setpoint));
+    public void RunIntake(double Velocity) {
+        s_IntakeMotor.setControl(m_velocityVoltage.withVelocity(Velocity));
     }
 
     public void stop(){
