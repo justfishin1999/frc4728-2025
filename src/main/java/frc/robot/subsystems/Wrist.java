@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -23,39 +24,55 @@ public class Wrist extends SubsystemBase{
         s_kP = Constants.WristConstants.kP;
         s_kI = Constants.WristConstants.kI;
         s_kD = Constants.WristConstants.kD;
-        s_kS = Constants.WristConstants.kS;
-        s_kV = Constants.WristConstants.kV;
         s_kA = Constants.WristConstants.kA;
-
+        s_Acceleration = Constants.WristConstants.kAcceleration;
+        s_CruiseVelo = Constants.WristConstants.kCruiseVelo;
+        s_Jerk = Constants.WristConstants.kJerk;
         s_motorID = Constants.WristConstants.motor1ID;
+        s_motionMagicA = Constants.WristConstants.kMotionMagicA;
+        s_motionMagicV = Constants.WristConstants.kMotionMagicV;
 
         s_wristMotor = new TalonFX(s_motorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
+
+        s_brake = new NeutralOut();
+
         config.Slot0.kP = s_kP;
         config.Slot0.kI = s_kI;
         config.Slot0.kD = s_kD;
-        config.Slot0.kS = s_kS;
-        config.Slot0.kV = s_kV;
         config.Slot0.kA = s_kA;
 
         config.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
         config.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
-        
+
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
         //config.MotionMagic.MotionMagicJerk = s_Jerk;
         //config.MotionMagic.MotionMagic_kA = s_motionMagicA;
         //config.MotionMagic.MotionMagic_kV = s_motionMagicV;
 
+        var TalonFXConfigurator = s_wristMotor.getConfigurator();
+        var limitConfigs = new CurrentLimitsConfigs();
+
+        // enable stator current limit
+        limitConfigs.StatorCurrentLimit = 45; 
+        limitConfigs.StatorCurrentLimitEnable = true;
+
+        TalonFXConfigurator.apply(limitConfigs);
+
+        //try to apply configurations to motors, throw warning to driver station if it doesn't work
         try{
-            s_wristMotor.getConfigurator().apply(config);
-            System.out.println("Successfully configured wrist motor");
+            s_wristMotor.getConfigurator().apply(config.Slot0);
+            s_wristMotor.getConfigurator().apply(config.MotionMagic);
+            System.out.println("Successfully configured Wrist motors!!");
+
+        } catch(Exception e1) {
+            DriverStation.reportWarning(getName(), e1.getStackTrace());
+            System.out.println("Failed to apply Wrist motor configs: "+e1.getStackTrace());
         }
-        catch(Exception e1){
-            DriverStation.reportWarning(getName(),e1.getStackTrace());
-            System.out.println("Failed to apply wrist motor configs: "+e1.getStackTrace());
-        }
+        //set boolean false to true to invert motor direction
+
         s_request = new MotionMagicVoltage(0);
 
     }
@@ -65,7 +82,7 @@ public class Wrist extends SubsystemBase{
         SmartDashboard.putNumber("Wrist Velocity",s_wristMotor.getVelocity().getValueAsDouble());
     }
 
-    public void actuateArm(double setpoint){
+    public void moveArm(double setpoint){
         s_wristMotor.setControl(s_request.withPosition(setpoint));
     }
 

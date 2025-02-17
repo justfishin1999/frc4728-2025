@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +17,8 @@ public class Intake extends SubsystemBase{
     TalonFX s_IntakeMotor;
     NeutralOut s_brake;
     VelocityVoltage m_velocityVoltage;
+    DigitalInput m_photoEye;
+    boolean photoCell;
 
     public Intake() {
         s_kP = Constants.IntakeConstants.kP;
@@ -31,6 +34,8 @@ public class Intake extends SubsystemBase{
 
         s_IntakeMotor = new TalonFX(s_motorID);
 
+        m_photoEye = new DigitalInput(7);
+
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.Slot0.kP = s_kP;
         config.Slot0.kI = s_kI;
@@ -41,6 +46,7 @@ public class Intake extends SubsystemBase{
 
         try{
             s_IntakeMotor.getConfigurator().apply(config);
+            System.out.println("Successfully configured intake motor!!");
         }
         catch(Exception e1){
             DriverStation.reportWarning(getName(),e1.getStackTrace());
@@ -51,6 +57,13 @@ public class Intake extends SubsystemBase{
 
     public void periodic(){
         SmartDashboard.putNumber("Intake Velocity",s_IntakeMotor.getVelocity().getValueAsDouble());
+
+        photoCell = m_photoEye.get();
+        SmartDashboard.putBoolean("Intake Photo Cell Status",photoCell);
+    }
+
+    public boolean getPhotoCell(){
+        return photoCell;
     }
 
     public void RunIntake(double Velocity) {
@@ -58,6 +71,6 @@ public class Intake extends SubsystemBase{
     }
 
     public void stop(){
-        s_IntakeMotor.setControl(s_brake);
+        s_IntakeMotor.setControl(m_velocityVoltage.withVelocity(0));
     }
 }

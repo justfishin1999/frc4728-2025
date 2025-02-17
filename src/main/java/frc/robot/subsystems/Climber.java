@@ -40,6 +40,8 @@ public class Climber extends SubsystemBase {
 
     m_climberMotor = new SparkMax(m_climberMotorID, MotorType.kBrushless);
 
+    m_motorConfig = new SparkMaxConfig();
+
     m_closedLoopController = m_climberMotor.getClosedLoopController();
     m_encoder = m_climberMotor.getEncoder();
     
@@ -50,6 +52,7 @@ public class Climber extends SubsystemBase {
         .p(k_P)
         .i(k_I)
         .d(k_D)
+        .velocityFF(k_FF)
         .outputRange(Constants.minMaxOutputConstants.kMinOutput, Constants.minMaxOutputConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
 
     m_motorConfig.closedLoop.maxMotion
@@ -77,11 +80,15 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void runClimber(double setpoint){
-    m_closedLoopController.setReference(setpoint,ControlType.kMAXMotionPositionControl);
+  public void runClimber(double velocity){
+    m_closedLoopController.setReference(velocity,ControlType.kVelocity);
   }
 
   public void resetEncoder(){
     m_encoder.setPosition(0.0);
+  }
+
+  public void stop(){
+    m_closedLoopController.setReference(0,ControlType.kVelocity);
   }
 }

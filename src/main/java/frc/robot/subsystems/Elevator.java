@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
@@ -50,7 +52,10 @@ public class Elevator extends SubsystemBase{
         s_elevator1 = new TalonFX(s_topMotorID);
         s_elevator2 = new TalonFX(s_bottomMotorID);
 
+        //var limitConfigs = new CurrentLimitsConfigs();
+
         TalonFXConfiguration config = new TalonFXConfiguration();
+
 
         s_brake = new NeutralOut();
 
@@ -65,18 +70,50 @@ public class Elevator extends SubsystemBase{
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
         //config.MotionMagic.MotionMagicJerk = s_Jerk;
-        //config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
-        //config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
+
+        //limitConfigs.StatorCurrentLimit = 5;
+        //limitConfigs.StatorCurrentLimitEnable = true;
+
+        var TalonFXConfigurator = s_elevator1.getConfigurator();
+        var limitConfigs = new CurrentLimitsConfigs();
+
+        // enable stator current limit
+        limitConfigs.StatorCurrentLimit = 50; 
+        limitConfigs.StatorCurrentLimitEnable = true;
+
+        TalonFXConfigurator.apply(limitConfigs);
 
         //try to apply configurations to motors, throw warning to driver station if it doesn't work
         try{
             s_elevator1.getConfigurator().apply(config.Slot0);
             s_elevator2.getConfigurator().apply(config.Slot0);
+            System.out.println("Successfully configured elevator motors!!");
         } catch(Exception e1) {
             DriverStation.reportWarning(getName(), e1.getStackTrace());
             System.out.println("Failed to apply elevator motor configs: "+e1.getStackTrace());
         }
+
+        config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
+
+        //config.MotionMagic.MotionMagicJerk = s_Jerk;
+        //config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
+        //config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
+
+        //try to apply configuration to motors, throw warning to driver station if it doesn't work
+        try{
+            s_elevator1.getConfigurator().apply(config.Slot0);
+            s_elevator1.getConfigurator().apply(config.MotionMagic);
+            s_elevator2.getConfigurator().apply(config.Slot0);
+            s_elevator2.getConfigurator().apply(config.MotionMagic);
+            //s_elevator2.getConfigurator().apply(limitConfigs);
+            //s_elevator2.getConfigurator().apply(limitConfigs);
+        } catch(Exception e1) {
+            DriverStation.reportWarning(getName(), e1.getStackTrace());
+            System.out.println("Failed to apply elevator motor config: "+e1.getStackTrace());
+        }
         //set boolean false to true to invert motor direction
+        
+        s_elevator1.setPosition(0); //zero encoder?
 
         s_request = new MotionMagicVoltage(0);
     }
@@ -87,7 +124,9 @@ public class Elevator extends SubsystemBase{
     }
 
     public void periodic(){
+        //periodically output the elevator position and speed
         SmartDashboard.putNumber("Elevator Position:",s_elevator1.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Elevator Velocity",s_elevator1.getVelocity().getValueAsDouble());
     }
 
     public void stop(){
