@@ -4,18 +4,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Wrist;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Intake;
+//import frc.robot.subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetWristL1 extends InstantCommand {
-  Wrist m_wrist;
+public class RunIntakeScore extends Command {
+  Intake m_Intake;
 
-  public SetWristL1(Wrist wrist) {
-    this.m_wrist = wrist;
-    addRequirements(wrist);
+  public RunIntakeScore(Intake m_Intake) {
+    this.m_Intake = m_Intake;
+    addRequirements(m_Intake);
   }
 
   // Called when the command is initially scheduled.
@@ -26,16 +27,16 @@ public class SetWristL1 extends InstantCommand {
 
   @Override
   public void execute(){
-    m_wrist.moveArm(-15);
+    m_Intake.RunIntake(25);
   }
 
   @Override
   public void end(boolean interrupted) {
-    
+    m_Intake.stop();
   }
 
   @Override
   public boolean isFinished(){
-    return true;
+    return false;
   }
 }

@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Wrist;
+//import frc.robot.subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -14,7 +14,7 @@ import frc.robot.subsystems.Wrist;
 public class RunIntakeIn extends Command {
   Intake m_Intake;
 
-  public RunIntakeIn(Wrist wrist) {
+  public RunIntakeIn(Intake m_Intake) {
     this.m_Intake = m_Intake;
     addRequirements(m_Intake);
   }
@@ -32,11 +32,11 @@ public class RunIntakeIn extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_Intake.RunIntake(0);
+    m_Intake.stop();
   }
 
   @Override
   public boolean isFinished(){
-    return true;
+    return false;
   }
 }

@@ -26,7 +26,7 @@ public class SetWristL2_3 extends InstantCommand {
 
   @Override
   public void execute(){
-    m_wrist.actuateArm(0);
+    m_wrist.moveArm(-4);
   }
 
   @Override

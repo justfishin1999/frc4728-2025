@@ -10,10 +10,10 @@ import frc.robot.subsystems.Wrist;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SetWristL1 extends InstantCommand {
+public class SetWristAlgae1_2 extends InstantCommand {
   Wrist m_wrist;
 
-  public SetWristL1(Wrist wrist) {
+  public SetWristAlgae1_2(Wrist wrist) {
     this.m_wrist = wrist;
     addRequirements(wrist);
   }
@@ -26,7 +26,7 @@ public class SetWristL1 extends InstantCommand {
 
   @Override
   public void execute(){
-    m_wrist.moveArm(-15);
+    m_wrist.moveArm(-5.3);
   }
 
   @Override
