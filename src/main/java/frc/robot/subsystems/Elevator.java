@@ -52,10 +52,7 @@ public class Elevator extends SubsystemBase{
         s_elevator1 = new TalonFX(s_topMotorID);
         s_elevator2 = new TalonFX(s_bottomMotorID);
 
-        //var limitConfigs = new CurrentLimitsConfigs();
-
         TalonFXConfiguration config = new TalonFXConfiguration();
-
 
         s_brake = new NeutralOut();
 
@@ -69,7 +66,6 @@ public class Elevator extends SubsystemBase{
 
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
-        //config.MotionMagic.MotionMagicJerk = s_Jerk;
 
         CurrentLimitConfigs limitConfigs = new CurrentLimitsConfigs();
 
