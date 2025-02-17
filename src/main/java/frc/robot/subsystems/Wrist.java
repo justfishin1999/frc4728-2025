@@ -48,23 +48,18 @@ public class Wrist extends SubsystemBase{
 
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
-        //config.MotionMagic.MotionMagicJerk = s_Jerk;
-        //config.MotionMagic.MotionMagic_kA = s_motionMagicA;
-        //config.MotionMagic.MotionMagic_kV = s_motionMagicV;
 
-        var TalonFXConfigurator = s_wristMotor.getConfigurator();
         var limitConfigs = new CurrentLimitsConfigs();
 
         // enable stator current limit
         limitConfigs.StatorCurrentLimit = 45; 
         limitConfigs.StatorCurrentLimitEnable = true;
 
-        TalonFXConfigurator.apply(limitConfigs);
-
         //try to apply configurations to motors, throw warning to driver station if it doesn't work
         try{
             s_wristMotor.getConfigurator().apply(config.Slot0);
             s_wristMotor.getConfigurator().apply(config.MotionMagic);
+            s_wristMotor.getConfigurator().apply(limitConfigs);
             System.out.println("Successfully configured Wrist motors!!");
 
         } catch(Exception e1) {
