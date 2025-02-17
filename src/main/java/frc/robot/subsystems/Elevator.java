@@ -71,33 +71,11 @@ public class Elevator extends SubsystemBase{
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
         //config.MotionMagic.MotionMagicJerk = s_Jerk;
 
-        //limitConfigs.StatorCurrentLimit = 5;
-        //limitConfigs.StatorCurrentLimitEnable = true;
-
-        var TalonFXConfigurator = s_elevator1.getConfigurator();
-        var limitConfigs = new CurrentLimitsConfigs();
+        CurrentLimitConfigs limitConfigs = new CurrentLimitsConfigs();
 
         // enable stator current limit
         limitConfigs.StatorCurrentLimit = 50; 
         limitConfigs.StatorCurrentLimitEnable = true;
-
-        TalonFXConfigurator.apply(limitConfigs);
-
-        //try to apply configurations to motors, throw warning to driver station if it doesn't work
-        try{
-            s_elevator1.getConfigurator().apply(config.Slot0);
-            s_elevator2.getConfigurator().apply(config.Slot0);
-            System.out.println("Successfully configured elevator motors!!");
-        } catch(Exception e1) {
-            DriverStation.reportWarning(getName(), e1.getStackTrace());
-            System.out.println("Failed to apply elevator motor configs: "+e1.getStackTrace());
-        }
-
-        config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
-
-        //config.MotionMagic.MotionMagicJerk = s_Jerk;
-        //config.MotionMagic.MotionMagicExpo_kA = s_motionMagicA;
-        //config.MotionMagic.MotionMagicExpo_kV = s_motionMagicV;
 
         //try to apply configuration to motors, throw warning to driver station if it doesn't work
         try{
@@ -105,8 +83,8 @@ public class Elevator extends SubsystemBase{
             s_elevator1.getConfigurator().apply(config.MotionMagic);
             s_elevator2.getConfigurator().apply(config.Slot0);
             s_elevator2.getConfigurator().apply(config.MotionMagic);
-            //s_elevator2.getConfigurator().apply(limitConfigs);
-            //s_elevator2.getConfigurator().apply(limitConfigs);
+            s_elevator1.getConfigurator().apply(limitConfigs);
+            s_elevator2.getConfigurator().apply(limitConfigs);
         } catch(Exception e1) {
             DriverStation.reportWarning(getName(), e1.getStackTrace());
             System.out.println("Failed to apply elevator motor config: "+e1.getStackTrace());
