@@ -15,10 +15,10 @@ public final class Constants {
         public static double kD = 0.1;
         public static double kS = 0.25;
         public static double kV = 0.12;
-        public static double kA = 0.1;
+        public static double kA = 0.01;
 
-        public static double kAcceleration = 0.5;
-        public static double kCruiseVelo = 0.1;
+        public static double kAcceleration = 120; //Was 30
+        public static double kCruiseVelo = 110; //Was 30
         public static double kJerk = 1600.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
@@ -36,9 +36,9 @@ public final class Constants {
         public static double kA = 0.0;
 
         public static double kAcceleration = 0.5;
-        public static double kCruiseVelo = 0.1;
+        public static double kCruiseVelo = 0.1; //Was 0.1 
         public static double kJerk = 1600.0;
-        public static double kMotionMagicV = 0.12;
+        public static double kMotionMagicV = 0.12; //was .12
         public static double kMotionMagicA = 0.1;
 
         public static int motor1ID = 8;
@@ -50,24 +50,24 @@ public final class Constants {
         public static double kD = 0.1;
         public static double kS = 0.25;
         public static double kV = 0.12;
-        public static double kA = 0.1;
+        public static double kA = 0.01;
 
-        public static double kAcceleration = 50.0;
-        public static double kCruiseVelo = 10.0;
-        public static double kJerk = 1600.0;
+        public static double kAcceleration = 25.0;
+        public static double kCruiseVelo = 40.0;
+        public static double kJerk = 2000.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
 
-        public static int motor1ID = 7;
+        public static int motor1ID = 32;
     }
 
     public static final class ClimberConstants {
         /*Define climber controller variables and motor IDs(s) */
-        public static double kP = 0.4;
+        public static double kP = 0.0001;
         public static double kI = 0.0;
         public static double kD = 0.0;
 
-        public static double kFF = 0.0; //not used here
+        public static double kFF = 0.5;
 
         public static int kMaxMotionVelocity = 500;
         public static int kMaxMotionAcceleration = 3000;
