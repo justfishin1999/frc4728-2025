@@ -4,41 +4,31 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-
-import com.revrobotics.*;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   SparkMax m_climberMotor;
   SparkMaxConfig m_motorConfig;
   SparkClosedLoopController m_closedLoopController;
   RelativeEncoder m_encoder;
-  double k_P, k_I, k_D, k_FF;
-  int m_climberMotorID, k_maxAccel, k_maxVelo;
 
   /** Creates a new Climber. */
   public Climber() {
-    k_P = Constants.ClimberConstants.kP;
-    k_I = Constants.ClimberConstants.kI;
-    k_D = Constants.ClimberConstants.kD;
-    k_FF = Constants.ClimberConstants.kFF;
-    m_climberMotorID = Constants.ClimberConstants.climberMotorID;
-    k_maxAccel = Constants.ClimberConstants.kMaxMotionAcceleration;
-    k_maxVelo = Constants.ClimberConstants.kMaxMotionVelocity;
-
-    m_climberMotor = new SparkMax(m_climberMotorID, MotorType.kBrushless);
+    m_climberMotor = new SparkMax(Constants.ClimberConstants.climberMotorID, MotorType.kBrushless);
 
     m_motorConfig = new SparkMaxConfig();
 
@@ -49,25 +39,25 @@ public class Climber extends SubsystemBase {
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         // Set PID values for position control. We don't need to pass a closed
         // loop slot, as it will default to slot 0.
-        .p(k_P)
-        .i(k_I)
-        .d(k_D)
-        .velocityFF(k_FF)
+        .p(Constants.ClimberConstants.kP)
+        .i(Constants.ClimberConstants.kI)
+        .d(Constants.ClimberConstants.kD)
+        .velocityFF(Constants.ClimberConstants.kFF)
         .outputRange(Constants.minMaxOutputConstants.kMinOutput, Constants.minMaxOutputConstants.kMaxOutput, ClosedLoopSlot.kSlot1);
 
     m_motorConfig.closedLoop.maxMotion
         // Set MAXMotion parameters for position control. We don't need to pass
         // a closed loop slot, as it will default to slot 0.
-        .maxVelocity(k_maxVelo)
-        .maxAcceleration(k_maxAccel)
+        .maxVelocity(Constants.ClimberConstants.kMaxMotionVelocity)
+        .maxAcceleration(Constants.ClimberConstants.kMaxMotionAcceleration)
         .allowedClosedLoopError(1);
     try{
       m_climberMotor.configure(m_motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-      System.out.println("Successfully configured Climber motor");
+      System.out.println("!!Successfully configured Climber motor!!");
     }
     catch (Exception e1){
-      System.err.println("Failed to apply Climber motor configurations: "+e1.getStackTrace());
-      DriverStation.reportWarning("Failed to apply Climber motor configuration: "+e1.getStackTrace(),true);
+      System.err.println("Failed to apply Climber motor configurations: "+e1.toString());
+      DriverStation.reportWarning("Failed to apply Climber motor configuration",true);
     }
     
 
