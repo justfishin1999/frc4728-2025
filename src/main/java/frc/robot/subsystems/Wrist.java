@@ -1,10 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -12,6 +7,11 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Wrist extends SubsystemBase{
     double s_kP, s_kI, s_kD, s_kS, s_kV, s_kA, s_Acceleration, s_CruiseVelo, s_Jerk, s_motionMagicA, s_motionMagicV;
@@ -35,6 +35,7 @@ public class Wrist extends SubsystemBase{
         s_wristMotor = new TalonFX(s_motorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
+        CurrentLimitsConfigs limitConfigs = new CurrentLimitsConfigs();
 
         s_brake = new NeutralOut();
 
@@ -49,7 +50,6 @@ public class Wrist extends SubsystemBase{
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
 
-        var limitConfigs = new CurrentLimitsConfigs();
 
         // enable stator current limit
         limitConfigs.StatorCurrentLimit = 45; 
@@ -72,6 +72,7 @@ public class Wrist extends SubsystemBase{
 
     }
 
+    @Override
     public void periodic(){
         SmartDashboard.putNumber("Wrist Position",s_wristMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Wrist Velocity",s_wristMotor.getVelocity().getValueAsDouble());
