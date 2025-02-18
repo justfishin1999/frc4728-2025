@@ -53,6 +53,7 @@ public class Elevator extends SubsystemBase{
         s_elevator2 = new TalonFX(s_bottomMotorID);
 
         TalonFXConfiguration config = new TalonFXConfiguration();
+        CurrentLimitsConfigs limitConfigs = new CurrentLimitsConfigs();
 
         s_brake = new NeutralOut();
 
@@ -67,7 +68,6 @@ public class Elevator extends SubsystemBase{
         config.MotionMagic.MotionMagicCruiseVelocity = s_CruiseVelo;
         config.MotionMagic.MotionMagicAcceleration = s_Acceleration;
 
-        CurrentLimitConfigs limitConfigs = new CurrentLimitsConfigs();
 
         // enable stator current limit
         limitConfigs.StatorCurrentLimit = 50; 
