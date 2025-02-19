@@ -38,6 +38,10 @@ public final class Constants {
         public static double kV = 0.0;
         public static double kA = 0.0;
 
+        public static double runIntakeInVelo = -20;
+        public static double runIntakeOutVelo = 30;
+        public static double runIntakeScoreVelo = 25;
+
         public static int motor1ID = 8;
         public static int photoCellDIO = 7;
     }
@@ -70,6 +74,9 @@ public final class Constants {
         public static int kMaxMotionAcceleration = 3000;
 
         public static int climberMotorID = 30;
+
+        public static double climberFwdVelo = 20;
+        public static double climberRevVelo = -20;
 
     }
 }
