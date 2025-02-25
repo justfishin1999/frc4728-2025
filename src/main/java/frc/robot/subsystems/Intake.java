@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,9 +31,11 @@ public class Intake extends SubsystemBase{
         config.Slot0.kS = Constants.IntakeConstants.kS;
         config.Slot0.kV = Constants.IntakeConstants.kV;
         config.Slot0.kA = Constants.IntakeConstants.kA;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         try{
             s_IntakeMotor.getConfigurator().apply(config);
+            s_IntakeMotor.getConfigurator().apply(config.MotorOutput);
             System.out.println("!!Successfully configured intake motor!!");
         }
         catch(Exception e1){
