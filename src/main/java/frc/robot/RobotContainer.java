@@ -45,14 +45,20 @@ public class RobotContainer {
     private Wrist wrist = new Wrist();
     private Climber climber = new Climber();
 
-    private double translationMultiplier, strafeMultiplier, rotateMultiplier;
+    //default values
+    public double translationMultiplier = 0.7;
+    public double strafeMultiplier = 0.7;
+    public double rotateMultipler = 0.7;
+    //default deadbands
+    public double deadband = 0.1;
+    public double rotateDeadband = 0.1;
 
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.15) // Add a 10% deadband
+            .withDeadband(MaxSpeed * deadband).withRotationalDeadband(MaxAngularRate * rotateDeadband) // Add a 8% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -90,9 +96,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.65*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(0.65*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(0.9*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(translationMultiplier*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(strafeMultiplier*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(rotateMultipler*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -119,12 +125,20 @@ public class RobotContainer {
         joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //left bumper to toggle drvetrain to low speed
-        joystick.leftBumper().whileTrue(new InstantCommand(() -> translationMultiplier = .5));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> translationMultiplier = 1.0));
-        joystick.leftBumper().whileTrue(new InstantCommand(() -> strafeMultiplier = .5));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> strafeMultiplier = 1.0));
-        joystick.leftBumper().whileTrue(new InstantCommand(() -> rotateMultiplier = .5));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateMultiplier = 1.0));
+        joystick.leftBumper().whileTrue(new InstantCommand(() -> translationMultiplier = .15));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> translationMultiplier = 0.65));
+        joystick.leftBumper().whileTrue(new InstantCommand(() -> strafeMultiplier = .15));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> strafeMultiplier = 0.65));
+        joystick.leftBumper().whileTrue(new InstantCommand(() -> rotateMultipler = .35));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateMultipler = 0.6));
+
+        //slow button deadbands
+        joystick.leftBumper().whileTrue(new InstantCommand(() -> deadband = 0.05));
+        joystick.leftBumper().whileTrue(new InstantCommand(() -> rotateDeadband = 0.05));
+
+        //normal deadbands
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> deadband = 0.1));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateDeadband = 0.1));
     }
 
     public Command getAutonomousCommand() {
