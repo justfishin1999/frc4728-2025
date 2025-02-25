@@ -17,8 +17,8 @@ public final class Constants {
         public static double kV = 0.12;
         public static double kA = 0.01;
 
-        public static double kAcceleration = 120; //Was 30
-        public static double kCruiseVelo = 110; //Was 30
+        public static double kAcceleration = 200; //Was 120
+        public static double kCruiseVelo = 100; //Was 110
         public static double kJerk = 1600.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
@@ -54,8 +54,8 @@ public final class Constants {
         public static double kV = 0.12;
         public static double kA = 0.01;
 
-        public static double kAcceleration = 25.0;
-        public static double kCruiseVelo = 40.0;
+        public static double kAcceleration = 80.0;
+        public static double kCruiseVelo = 50.0;
 
         public static double currentLimit = 45.0;
         public static boolean enableCurrentLimits = true;
@@ -75,8 +75,8 @@ public final class Constants {
 
         public static int climberMotorID = 30;
 
-        public static double climberFwdVelo = 20;
-        public static double climberRevVelo = -20;
+        public static double climberFwdVelo = 125;
+        public static double climberRevVelo = -125;
 
     }
 }
