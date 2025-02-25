@@ -26,7 +26,7 @@ public class SetWristBottom extends InstantCommand {
 
   @Override
   public void execute(){
-    m_wrist.moveArm(0.25);
+    m_wrist.moveArm(0);
   }
 
   @Override
