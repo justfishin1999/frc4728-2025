@@ -15,6 +15,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,12 +26,17 @@ public class Climber extends SubsystemBase {
   SparkMaxConfig m_motorConfig;
   SparkClosedLoopController m_closedLoopController;
   RelativeEncoder m_encoder;
+  DigitalInput limitSwitch;
+  boolean m_limitSwitch;
 
   /** Creates a new Climber. */
   public Climber() {
     m_climberMotor = new SparkMax(Constants.ClimberConstants.climberMotorID, MotorType.kBrushless);
 
     m_motorConfig = new SparkMaxConfig();
+
+    limitSwitch = new DigitalInput(6);
+    m_limitSwitch = false;
 
     m_closedLoopController = m_climberMotor.getClosedLoopController();
     m_encoder = m_climberMotor.getEncoder();
@@ -65,9 +71,15 @@ public class Climber extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //periodically get the status of the limit switch
+    m_limitSwitch = limitSwitch.get();
+
+    //put the status of the limit switch on the dashboard
+    SmartDashboard.putBoolean("Limit Switch Status",m_limitSwitch);
+
+    //put the velocity and position of the climber on the dashboard
     SmartDashboard.putNumber("Climber Velocity",m_encoder.getVelocity());
     SmartDashboard.putNumber("Climber Position",m_encoder.getPosition());
-    // This method will be called once per scheduler run
   }
 
   public void runClimber(double velocity){
@@ -80,5 +92,9 @@ public class Climber extends SubsystemBase {
 
   public void stop(){
     m_closedLoopController.setReference(0,ControlType.kVelocity);
+  }
+
+  public boolean getLimitSwitchClimber(){
+    return m_limitSwitch;
   }
 }
