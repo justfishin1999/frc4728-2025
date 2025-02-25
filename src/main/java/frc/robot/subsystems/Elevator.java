@@ -72,6 +72,7 @@ public class Elevator extends SubsystemBase{
 
     @Override
     public void periodic(){
+
         //periodically output the elevator position and speed
         SmartDashboard.putNumber("Elevator Position:",s_elevator1.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Elevator Velocity",s_elevator1.getVelocity().getValueAsDouble());
