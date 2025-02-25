@@ -18,7 +18,7 @@ public class RunAlgae1 extends SequentialCommandGroup {
   public RunAlgae1(Elevator m_Elevator, Wrist m_Wrist, Intake m_Intake) {
     super(
       new SetElevatorAlgae1 (m_Elevator),
-      new WaitCommand(1), 
+      new WaitCommand(0.25), 
       new SetWristAlgae1_2(m_Wrist), 
       new RunIntakeOut (m_Intake).withTimeout(135));
   }
