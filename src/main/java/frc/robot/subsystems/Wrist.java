@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,6 +31,7 @@ public class Wrist extends SubsystemBase{
         config.Slot0.kI = Constants.WristConstants.kI;
         config.Slot0.kD = Constants.WristConstants.kD;
         config.Slot0.kA = Constants.WristConstants.kA;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         config.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
         config.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseVelocitySign;
@@ -46,6 +48,7 @@ public class Wrist extends SubsystemBase{
         try{
             s_wristMotor.getConfigurator().apply(config.Slot0);
             s_wristMotor.getConfigurator().apply(config.MotionMagic);
+            s_wristMotor.getConfigurator().apply(config.MotorOutput);
             s_wristMotor.getConfigurator().apply(limitConfigs);
             System.out.println("!!Successfully configured Wrist motor!!");
 
@@ -56,6 +59,8 @@ public class Wrist extends SubsystemBase{
         //set boolean false to true to invert motor direction
 
         s_request = new MotionMagicVoltage(0);
+
+        s_wristMotor.setPosition(0);
 
     }
 
