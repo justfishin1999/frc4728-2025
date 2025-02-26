@@ -95,6 +95,6 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean getLimitSwitchClimber(){
-    return m_limitSwitch;
+    return !m_limitSwitch;
   }
 }
