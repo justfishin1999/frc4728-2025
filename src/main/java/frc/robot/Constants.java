@@ -38,9 +38,9 @@ public final class Constants {
         public static double kV = 0.0;
         public static double kA = 0.0;
 
-        public static double runIntakeInVelo = -20;
+        public static double runIntakeInVelo = -35;
         public static double runIntakeOutVelo = 30;
-        public static double runIntakeScoreVelo = 25;
+        public static double runIntakeScoreVelo = 35;
 
         public static int motor1ID = 8;
         public static int photoCellDIO = 7;
@@ -61,6 +61,8 @@ public final class Constants {
         public static boolean enableCurrentLimits = true;
 
         public static int motor1ID = 32;
+
+        public static int cancoderID = 40;
     }
 
     public static final class ClimberConstants {
@@ -75,8 +77,8 @@ public final class Constants {
 
         public static int climberMotorID = 30;
 
-        public static double climberFwdVelo = 125;
-        public static double climberRevVelo = -125;
+        public static double climberFwdVelo = 90;
+        public static double climberRevVelo = -90;
 
     }
 }
