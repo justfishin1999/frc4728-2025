@@ -105,6 +105,7 @@ public class RobotContainer {
         new EventTrigger("ElevatorUpToL4").onTrue(new GoToL4(elevator, wrist));
         new EventTrigger("ElevatorScoreL4").onTrue(new ScoreL4(wrist, elevator));
         NamedCommands.registerCommand("AutoAlign",new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
+        new EventTrigger("AuthAlign_PP").onTrue(new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
         new EventTrigger("AutoAlignRight").whileTrue(new AutoAlign_Left(drivetrain,limeDrive,0.05));
         new EventTrigger("AutoAlign_RightPP").whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05));
 
@@ -114,12 +115,16 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
-            drive.withVelocityX(translationMultiplier*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                .withVelocityY(strafeMultiplier*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                .withRotationalRate(rotateMultipler*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-        ));        
+        if(DriverStation.isAutonomous()){
+            return;
+        }
+        else {
+            drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
+                drive.withVelocityX(translationMultiplier*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(strafeMultiplier*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(rotateMultipler*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            ));        
+        }
         // reset the field-centric heading on left bumper press
         drivetrain.registerTelemetry(logger::telemeterize);
 
