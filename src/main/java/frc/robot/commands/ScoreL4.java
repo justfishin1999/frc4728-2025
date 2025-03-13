@@ -17,7 +17,7 @@ public class ScoreL4 extends SequentialCommandGroup {
   public ScoreL4(Wrist m_Wrist, Elevator m_Elevator) {
     super(
       new SetWristIn_L4(m_Wrist),
-      new WaitCommand(.8),
+      new WaitCommand(.45),
       new SetElevatorBottom(m_Elevator),
       new WaitCommand(0.0001), 
       new SetWristBottom(m_Wrist));

@@ -5,19 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Wrist; 
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GoToL3 extends SequentialCommandGroup {
-  /** Creates a new GoToL3. */
-  public GoToL3(Elevator m_Elevator, Wrist m_Wrist) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+public class GrabAlgae extends SequentialCommandGroup {
+  /** Creates a new ScoreL2_3. */
+  public GrabAlgae(Elevator m_Elevator, Wrist m_Wrist, Intake m_Intake) {
     super(
-      new SetWristL2_3(m_Wrist),
-      new SetElevatorL3(m_Elevator));
+    new SetElevatorGrabAlgae(m_Elevator),
+    new WaitCommand(0.5),
+    new SetWristGrabAlgae(m_Wrist),
+    new WaitCommand(0.5),
+    new RunIntakeIn (m_Intake).withTimeout(15));
   }
 }
