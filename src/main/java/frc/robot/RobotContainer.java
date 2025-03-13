@@ -18,6 +18,7 @@ import static edu.wpi.first.units.Units.Value;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -107,7 +108,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("AutoAlign",new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
         new EventTrigger("AuthAlign_PP").onTrue(new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
         new EventTrigger("AutoAlignRight").whileTrue(new AutoAlign_Left(drivetrain,limeDrive,0.05));
-        new EventTrigger("AutoAlign_RightPP").whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05));
+        new EventTrigger("AutoAlign_RightPP").whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05,1));
 
         //create auto chooser in dashboard
         autoChooser = AutoBuilder.buildAutoChooser("Main");
@@ -163,13 +164,12 @@ public class RobotContainer {
         joystick.leftBumper().whileFalse(new InstantCommand(() -> deadband = 0.06));
         joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateDeadband = 0.06));
 
-        joystick.rightBumper().whileTrue(new AutoAlign_Left(drivetrain, limeDrive, 0.05));
+        joystick.rightBumper().whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05,1));
     }
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected(); 
-            
         }
 
     }

@@ -5,37 +5,37 @@ import frc.robot.LimelightHelpers;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AutoAlign_Right extends Command {
 
     private final CommandSwerveDrivetrain drivetrain;
     private final SwerveRequest.RobotCentric limeDrive;
-    private final double alignmentSpeed;
+    private double alignmentSpeed, m_xspeed;
+    private int m_pipeline;
 
     // Constructor accepts limeDrive as a parameter from RobotContainer
-    public AutoAlign_Right(CommandSwerveDrivetrain drivetrain, SwerveRequest.RobotCentric limeDrive, double alignmentSpeed) {
+    public AutoAlign_Right(CommandSwerveDrivetrain drivetrain, SwerveRequest.RobotCentric limeDrive, double alignmentSpeed, int pipeline) {
         this.drivetrain = drivetrain;
         this.limeDrive = limeDrive;  // Use the limeDrive from RobotContainer
         this.alignmentSpeed = alignmentSpeed;
+        this.m_pipeline = pipeline;
         addRequirements(drivetrain);  // Ensure the drivetrain is required for this command
     }
 
     @Override
     public void initialize() {
         System.out.println("Caught auto alignment command");
-        // Optionally, you can initialize the pipeline or perform other tasks here if needed.
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(m_pipeline);
     }
 
     @Override
     public void execute() {
-        // Get the horizontal offset (tx) from Limelight
-        double tx = LimelightHelpers.getTX("limelight");
-        double ty = LimelightHelpers.getTY("limelight");
-        System.out.println("Mid auto align command");
+        m_xspeed = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0.0)*alignmentSpeed;
 
-        //PPHolonomicDriveController.overrideXFeedback(()->-tx*alignmentSpeed);
-        PPHolonomicDriveController.overrideXYFeedback(()->-tx*alignmentSpeed,()->-ty*alignmentSpeed);
+        drivetrain.applyRequest(() -> limeDrive.withVelocityY(-m_xspeed));
+        //drivetrain.setControl(limeDrive.withVelocityY(m_xspeed));
     }
 
     @Override
@@ -47,6 +47,5 @@ public class AutoAlign_Right extends Command {
     @Override
     public void end(boolean interrupted) {
         // Stop robot motion after alignment
-        PPHolonomicDriveController.clearXYFeedbackOverride();
 }
 }
