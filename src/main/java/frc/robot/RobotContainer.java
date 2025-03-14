@@ -18,7 +18,6 @@ import static edu.wpi.first.units.Units.Value;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -75,9 +74,6 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * deadband).withRotationalDeadband(MaxAngularRate * rotateDeadband) // Add a 8% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
-    SwerveRequest.RobotCentric limeDrive = new SwerveRequest.RobotCentric()
-    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-
     private final Telemetry logger = new Telemetry(MaxSpeed);
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandJoystick buttonBoard = new CommandJoystick(1);
@@ -105,10 +101,8 @@ public class RobotContainer {
         new EventTrigger("RunIntakeOut").onTrue(new RunIntakeOut(intake));
         new EventTrigger("ElevatorUpToL4").onTrue(new GoToL4(elevator, wrist));
         new EventTrigger("ElevatorScoreL4").onTrue(new ScoreL4(wrist, elevator));
-        NamedCommands.registerCommand("AutoAlign",new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
-        new EventTrigger("AuthAlign_PP").onTrue(new InstantCommand(()->drivetrain.applyRequest(()->limeDrive.withVelocityY(-LimelightHelpers.getTX("limelight")*.05))).withTimeout(2));
-        new EventTrigger("AutoAlignRight").whileTrue(new AutoAlign_Left(drivetrain,limeDrive,0.05));
-        new EventTrigger("AutoAlign_RightPP").whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05,1));
+        NamedCommands.registerCommand("AutoAlign",new AutoAlign_Right(drivetrain, 0.05, 0).withTimeout(1));
+        NamedCommands.registerCommand("AutoAlign_Left",new AutoAlign_Left(drivetrain,0.05,1).withTimeout(1));
 
         //create auto chooser in dashboard
         autoChooser = AutoBuilder.buildAutoChooser("Main");
@@ -116,16 +110,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        if(DriverStation.isAutonomous()){
-            return;
-        }
-        else {
-            drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
-                drive.withVelocityX(translationMultiplier*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(strafeMultiplier*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(rotateMultipler*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            ));        
-        }
+
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
+            drive.withVelocityX(translationMultiplier*-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                .withVelocityY(strafeMultiplier*-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                .withRotationalRate(rotateMultipler*-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+        ));        
         // reset the field-centric heading on left bumper press
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -164,12 +154,13 @@ public class RobotContainer {
         joystick.leftBumper().whileFalse(new InstantCommand(() -> deadband = 0.06));
         joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateDeadband = 0.06));
 
-        joystick.rightBumper().whileTrue(new AutoAlign_Right(drivetrain, limeDrive, 0.05,1));
+        joystick.rightBumper().whileTrue(new AutoAlign_Right(drivetrain, 0.05,0));
     }
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected(); 
+            
         }
 
     }

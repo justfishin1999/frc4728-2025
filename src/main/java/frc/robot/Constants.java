@@ -1,6 +1,12 @@
 package frc.robot;
 public final class Constants {
 
+    public static final class limelightConstants {
+        public static String leftLimelight = "limelight-left";
+        public static String rightLimelight = "limelight-right";
+        public static double defaultValue = 0.0;
+    }
+
     public static final class minMaxOutputConstants {
         /* Define max and min outputs */
         public static final int maxOutputRPM = 5700;
