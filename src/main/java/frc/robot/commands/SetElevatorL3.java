@@ -27,7 +27,7 @@ public class SetElevatorL3 extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_elevator.setElevatorSetpoint(-26.75);
+    s_elevator.setElevatorSetpoint(-27.5);
   }
 
   // Called once the command ends or is interrupted.

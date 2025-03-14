@@ -1,58 +1,55 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.RobotCentric;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AutoAlign_Left extends Command {
 
     private CommandSwerveDrivetrain drivetrain;
-    private SwerveRequest.RobotCentric limeDrive;
-    private double alignmentSpeed;
-    private double tx;
-    
-        public AutoAlign_Left(CommandSwerveDrivetrain drivetrain, SwerveRequest.RobotCentric limeDrive, double alignmentSpeed) {
-            this.drivetrain = drivetrain;
-            this.limeDrive = limeDrive;  // Now we pass in limeDrive to the command
-            this.alignmentSpeed = alignmentSpeed;
-            addRequirements(drivetrain);  // Ensure the drivetrain is required for this command
-        }
-    
-        @Override
-        public void initialize() {
-            DriverStation.reportWarning("caught auto loop",false);
-            // Initialize command, can be used for any pre-execution logic (e.g., turning on pipeline)
-        }
-    
-        @Override
-        public void execute() {
-            // Get the horizontal offset (tx) from Limelight
-            tx = LimelightHelpers.getTX("limelight");
+    private RobotCentric limeDrive = new RobotCentric()
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private double alignmentSpeed, m_xspeed;
+    private int m_pipeline;
 
-        // Use limeDrive (already set up in RobotContainer) to adjust the robot's rotation
-        drivetrain.applyRequest(() -> limeDrive.withVelocityY(-tx * alignmentSpeed));
+    // Constructor accepts limeDrive as a parameter from RobotContainer
+    public AutoAlign_Left(CommandSwerveDrivetrain drivetrain, double alignmentSpeed, int pipeline) {
+        this.drivetrain = drivetrain;
+        this.alignmentSpeed = alignmentSpeed;
+        this.m_pipeline = pipeline;
+        addRequirements(drivetrain);  // Ensure the drivetrain is required for this command
+    }
+
+    @Override
+    public void initialize() {
+        System.out.println("Caught auto alignment command");
+        NetworkTableInstance.getDefault().getTable(Constants.limelightConstants.rightLimelight).getEntry("pipeline").setDouble(m_pipeline);
+    }
+
+    @Override
+    public void execute() {
+        m_xspeed = NetworkTableInstance.getDefault().getTable(Constants.limelightConstants.rightLimelight).getEntry("tx").getDouble(0.0)*alignmentSpeed;
+        System.out.println("Running alignment command");
+        System.out.println("limelight" +m_xspeed);
+        drivetrain.setControl(limeDrive.withVelocityY(-m_xspeed).withVelocityX(0));
         }
 
     @Override
     public boolean isFinished() {
-        // The command finishes when tx is sufficiently close to zero (i.e., the robot is aligned)
-        if(tx<1&&tx>0){
-            DriverStation.reportWarning("ended auto command",false);
-            return true;
-        } else{
-            return false;
-        }  // You can adjust this threshold as needed
+        // The command finishes when tx is sufficiently close to zero (aligned)
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        // Stop the robot after alignment
-        drivetrain.applyRequest(() -> limeDrive.withVelocityY(0));  // Stop robot motion
-    }
+        // Stop robot motion after alignment
+}
 }
