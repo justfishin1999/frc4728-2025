@@ -13,13 +13,31 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoAlign_Right"
+            "name": "AutoAlign_RJ_Right"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "j To Source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source To k"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlign_RK_Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "k To Source"
           }
         }
       ]

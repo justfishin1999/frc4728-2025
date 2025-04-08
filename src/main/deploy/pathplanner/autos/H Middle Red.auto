@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "Home To h"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoAlign_Right"
+            "name": "AutoAlign_RH_Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Leave h"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Middle Autos",
   "choreoAuto": false
 }
