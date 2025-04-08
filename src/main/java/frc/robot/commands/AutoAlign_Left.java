@@ -36,7 +36,7 @@ public class AutoAlign_Left extends Command {
 
     @Override
     public void execute() {
-        m_xspeed = NetworkTableInstance.getDefault().getTable(Constants.limelightConstants.rightLimelight).getEntry("tx").getDouble(0.0)*alignmentSpeed;
+        m_xspeed = NetworkTableInstance.getDefault().getTable(Constants.limelightConstants.rightLimelight).getEntry("tx").getDouble(Constants.limelightConstants.defaultValue)*alignmentSpeed;
         System.out.println("Running alignment command");
         System.out.println("limelight" +m_xspeed);
         drivetrain.setControl(limeDrive.withVelocityY(-m_xspeed).withVelocityX(0));
