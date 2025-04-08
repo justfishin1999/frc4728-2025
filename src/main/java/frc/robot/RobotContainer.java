@@ -56,12 +56,12 @@ public class RobotContainer {
     private Climber climber = new Climber();
 
     //default values
-    public double translationMultiplier = 0.5;
-    public double strafeMultiplier = 0.5;
-    public double rotateMultipler = 0.65;
+    public double translationMultiplier = 0.65;
+    public double strafeMultiplier = 0.65;
+    public double rotateMultipler = 0.8;
     //default deadbands
-    public double deadband = 0.06;
-    public double rotateDeadband = 0.06;
+    public double deadband = 0.08;
+    public double rotateDeadband = 0.08;
 
     //bullshit test boolean
     boolean test;
@@ -89,7 +89,7 @@ public class RobotContainer {
         //register commands for path planner
         new EventTrigger("ScoreL2_3").onTrue(new ScoreL2_3(elevator, wrist, intake));
         new EventTrigger("ScoreL1").onTrue(new ScoreL1(elevator, wrist, intake));
-        new EventTrigger("ScoreL4").onTrue(new ScoreL4(wrist, elevator));
+        new EventTrigger("ScoreL4").onTrue(new ScoreL4_HitAlgae(wrist, elevator));
         new EventTrigger("GoHome").onTrue(new GoHome(elevator, wrist));
         new EventTrigger("GoHomeL1").onTrue(new GoHomeL1Only(wrist, elevator));
         new EventTrigger("GoToL1").onTrue(new GoToL1(elevator, wrist));
@@ -99,13 +99,18 @@ public class RobotContainer {
         new EventTrigger("RunAlgae1").onTrue(new RunAlgae1(elevator, wrist, intake));
         new EventTrigger("RunAlgae2").onTrue(new RunAlgae1(elevator, wrist, intake));
         new EventTrigger("RunIntakeOut").onTrue(new RunIntakeOut(intake));
-        new EventTrigger("ElevatorUpToL4").onTrue(new GoToL4(elevator, wrist));
-        new EventTrigger("ElevatorScoreL4").onTrue(new ScoreL4(wrist, elevator));
-        NamedCommands.registerCommand("AutoAlign",new AutoAlign_Right(drivetrain, 0.05, 0).withTimeout(1));
-        NamedCommands.registerCommand("AutoAlign_Left",new AutoAlign_Left(drivetrain,0.05,1).withTimeout(1));
 
+        NamedCommands.registerCommand("AutoAlign_Right",new AutoAlign_Right(drivetrain, 0.05, 0).withTimeout(0.4));
+        NamedCommands.registerCommand("AutoAlign_Left",new AutoAlign_Left(drivetrain,0.05,1).withTimeout(0.4));
+        NamedCommands.registerCommand("AutoAlign_Right1",new AutoAlign_Right(drivetrain, 0.05, 2).withTimeout(0.4));
+        NamedCommands.registerCommand("AutoAlign_Left1",new AutoAlign_Left(drivetrain,0.05,3).withTimeout(0.4));
+        NamedCommands.registerCommand("AutoAlign_Right2",new AutoAlign_Right(drivetrain, 0.05, 4).withTimeout(0.4));
+        NamedCommands.registerCommand("AutoAlign_Left2",new AutoAlign_Left(drivetrain,0.05,5).withTimeout(0.4));
+        NamedCommands.registerCommand("ScoreL4_Command",new ScoreL4_HitAlgae(wrist, elevator).withTimeout(0.6));
+        NamedCommands.registerCommand("ScoreL2_3_Command",new ScoreL2_3(elevator, wrist, intake).withTimeout(0.6));
+ 
         //create auto chooser in dashboard
-        autoChooser = AutoBuilder.buildAutoChooser("Main");
+        autoChooser = AutoBuilder.buildAutoChooser("Main"); 
         SmartDashboard.putData("Auto Mode", autoChooser);
     }
 
@@ -140,19 +145,19 @@ public class RobotContainer {
 
         //left bumper to toggle drvetrain to low speed
         joystick.leftBumper().whileTrue(new InstantCommand(() -> translationMultiplier = .13));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> translationMultiplier = 0.5));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> translationMultiplier = 0.65));
         joystick.leftBumper().whileTrue(new InstantCommand(() -> strafeMultiplier = .13));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> strafeMultiplier = 0.5));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> strafeMultiplier = 0.65));
         joystick.leftBumper().whileTrue(new InstantCommand(() -> rotateMultipler = .2));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateMultipler = 0.65));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateMultipler = 0.8));
 
         //slow button deadbands
         joystick.leftBumper().whileTrue(new InstantCommand(() -> deadband = 0.05));
         joystick.leftBumper().whileTrue(new InstantCommand(() -> rotateDeadband = 0.05));
 
         //normal deadbands
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> deadband = 0.06));
-        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateDeadband = 0.06));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> deadband = 0.08));
+        joystick.leftBumper().whileFalse(new InstantCommand(() -> rotateDeadband = 0.08));
 
         joystick.rightBumper().whileTrue(new AutoAlign_Right(drivetrain, 0.05,0));
     }

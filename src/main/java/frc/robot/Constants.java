@@ -23,8 +23,8 @@ public final class Constants {
         public static double kV = 0.12;
         public static double kA = 0.01;
 
-        public static double kAcceleration = 200; //Was 120
-        public static double kCruiseVelo = 100; //Was 110
+        public static double kAcceleration = 220; //Was 120
+        public static double kCruiseVelo = 120; //Was 110
         public static double kJerk = 1600.0;
         public static double kMotionMagicV = 0.12;
         public static double kMotionMagicA = 0.1;
@@ -44,9 +44,9 @@ public final class Constants {
         public static double kV = 0.0;
         public static double kA = 0.0;
 
-        public static double runIntakeInVelo = -35;
-        public static double runIntakeOutVelo = 30;
-        public static double runIntakeScoreVelo = 35;
+        public static double runIntakeInVelo = -30;
+        public static double runIntakeOutVelo = 27;
+        public static double runIntakeScoreVelo = 45;
 
         public static int motor1ID = 8;
         public static int photoCellDIO = 7;
@@ -60,8 +60,8 @@ public final class Constants {
         public static double kV = 0.12;
         public static double kA = 0.01;
 
-        public static double kAcceleration = 80.0;
-        public static double kCruiseVelo = 50.0;
+        public static double kAcceleration = 100.0;
+        public static double kCruiseVelo = 70.0;
 
         public static double currentLimit = 45.0;
         public static boolean enableCurrentLimits = true;
