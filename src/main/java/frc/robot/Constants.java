@@ -58,6 +58,9 @@ public final class Constants {
             public static double kFF = 0.0;
 
             public static int algaeMotorID = 99;
+
+            public static double inVelo = 1000;
+            public static double outVelo = -1000;
         }
     }
     
