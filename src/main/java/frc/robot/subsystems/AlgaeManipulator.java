@@ -40,6 +40,7 @@ public class AlgaeManipulator extends SubsystemBase{
 
         try{
             m_algaeMotor.configure(m_algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            System.out.println("!!Successfully configured algae motor!!");
         }
         catch (Exception e2){
             System.err.println("Failed to apply algae motor configurations: "+e2.toString());
