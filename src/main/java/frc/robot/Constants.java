@@ -50,7 +50,17 @@ public final class Constants {
 
         public static int motor1ID = 8;
         public static int photoCellDIO = 7;
+
+        public static final class Algae{
+            public static double kP = 0.1;
+            public static double kI = 0.0;
+            public static double kD = 0.0;
+            public static double kFF = 0.0;
+
+            public static int algaeMotorID = 99;
+        }
     }
+    
     public static final class WristConstants {
         /*Define wrist controller variables and motor IDs */
         public static double kP = 4.8;
